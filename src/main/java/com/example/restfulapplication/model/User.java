@@ -1,12 +1,10 @@
 package com.example.restfulapplication.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.HashSet;
@@ -15,13 +13,13 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
-    @NotEmpty
+    @NotBlank(message = "Недопустимое значение!")
     private String name;
     @Id
-    @NotEmpty
+    @NotBlank(message = "Недопустимое значение!")
     private String login;
-    @NotEmpty
-    @Pattern(regexp = "((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$")
+    @NotBlank(message = "Недопустимое значение!")
+    @Pattern(regexp = "((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$", message = "Пароль должен содержать букву в заглавном регистре и цифру!")
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)

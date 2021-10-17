@@ -3,13 +3,13 @@ package com.example.restfulapplication.controllers;
 import com.example.restfulapplication.model.User;
 import com.example.restfulapplication.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rest")
+@RequestMapping("/admin")
 public class RestAdminController {
 
 
@@ -25,25 +25,34 @@ public class RestAdminController {
         return userService.findAllUsers();
     }
 
-    @GetMapping("/admin/{login}")
-    public User getUser(@PathVariable("login") String userName) {
-        return userService.findByLogin(userName);
+    @GetMapping("/{login}")
+    public User getUser(@PathVariable("login") String login) {
+        return userService.findByLogin(login);
     }
 
-    @PostMapping("/admin")
-    public List<User> create(@Valid @RequestBody User user) {
+    @PostMapping
+    public String create(@RequestBody @Valid User user, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return  "success: " + false + "," +
+                    bindingResult.getAllErrors();
+        }
         userService.addNewUser(user);
-        return userService.findAllUsers();
+        return "success: " + true;
     }
 
-    @PatchMapping("/admin/edit")
-    public List<User> update(@RequestBody User user) {
+    @PatchMapping("/edit")
+    public String update(@RequestBody @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return  "success: " + false + "," +
+                    bindingResult.getAllErrors();
+        }
         userService.updateUser(user);
         System.out.println(user.toString());
-        return userService.findAllUsers();
+        return "success: " + true;
     }
 
-    @DeleteMapping("/admin/delete/{login}")
+    @DeleteMapping("/delete/{login}")
     public List<User> delete(@PathVariable("login") String userName) {
         userService.deleteUserByLogin(userName);
         return userService.findAllUsers();

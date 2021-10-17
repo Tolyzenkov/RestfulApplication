@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -25,6 +24,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
     }
+
 
     @Override
     public User findByLogin(String login) {
